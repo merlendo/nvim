@@ -17,8 +17,6 @@ vim.opt.helpheight = 25
 vim.o.statusline = "%<%f %h%m%r%{FugitiveStatusline()} %=%-14.(%l,%c%V%) %P"
 
 -- Common keymaps
---vim.g.mapleader = ' '
---vim.g.maplocalleader = ' '
 local map = vim.keymap.set
 map('n', '<leader>o', ':update<CR> :source<CR> :echo "Neovim config file reloaded"<CR>')
 map('n', '<leader>w', ':write<CR>')
@@ -57,6 +55,10 @@ else
 		{ src = "https://github.com/neovim/nvim-lspconfig" },
 		{ src = "https://github.com/tpope/vim-fugitive" },
 		{ src = "https://github.com/lewis6991/gitsigns.nvim" },
+		{ src = "https://github.com/hrsh7th/nvim-cmp" },
+		{ src = "https://github.com/hrsh7th/cmp-buffer" },
+		{ src = "https://github.com/hrsh7th/cmp-path" },
+		{ src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
 	})
 
 	-- explorer
@@ -68,8 +70,26 @@ else
 	})
 	map('n', '<leader>e', ":Oil<CR>")
 
+	-- autocompletion
+	local cmp = require("cmp")
+	local cmp_select = { behavior = cmp.SelectBehavior.Select }
+	cmp.setup({
+		sources = {
+			{ name = "nvim_lsp" },
+			{ name = "buffer" },
+			{ name = "path" },
+		},
+		mapping = {
+			["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
+			["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
+			["<C-y>"] = cmp.mapping.confirm({ select = true }),
+			["<C-Space>"] = cmp.mapping.complete(),
+		},
+	}
+	)
+
 	-- lsp
-	vim.lsp.enable({"ruff", "lua_ls", "ts_ls", "gopls", "intelephense", "angularls", "biome"})
+	vim.lsp.enable({ "ruff", "lua_ls", "ts_ls", "gopls", "intelephense", "angularls", "biome" })
 	map('n', '<leader>lf', function()
 		vim.lsp.buf.format()
 		vim.lsp.buf.code_action({
@@ -81,22 +101,14 @@ else
 		})
 	end
 	)
-	vim.api.nvim_create_autocmd('LspAttach', {
-		callback = function(ev)
-			local client = vim.lsp.get_client_by_id(ev.data.client_id)
-			if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
-				vim.opt.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy', 'popup' }
-				vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-			end
-		end,
-	})
 	vim.diagnostic.config({
-		virtual_text = { current_line = true }
+		virtual_text = { current_line = true },
+		signs = true,
 	})
 
 	-- treesitter
 	require "nvim-treesitter.configs".setup({
-		ensure_installed = { "lua", "python", "javascript", "html", "css", "rust", "go", "php"},
+		ensure_installed = { "lua", "python", "javascript", "html", "css", "rust", "go", "php" },
 		highlight = {
 			enable = true,
 			additional_vim_regex_highlighting = false,
@@ -119,8 +131,8 @@ else
 	map('n', '<leader>f', ":Pick files<CR>")
 	map('n', '<leader>h', ":Pick help<CR>")
 
-	-- colors
-	require "vague".setup({ transparent = true })
+	-- colors	
+	require("vague").setup({ transparent = true })
 	vim.cmd("colorscheme vague")
 
 	-- text highlighting when yanking
@@ -133,15 +145,8 @@ else
 	})
 
 	-- git
-	--vim.api.nvim_create_autocmd("FileType", {
-	--	pattern = "gitcommit",
-	--	callback = function()
-	--		vim.cmd("wincmd J")
-	--		vim.cmd("resize 8")
-	--	end,
-	--})
 	vim.api.nvim_create_autocmd("User", {
-		pattern = {"FugitiveIndex", "FugitiveEditor"},
+		pattern = { "FugitiveIndex", "FugitiveEditor" },
 		callback = function(opts)
 			vim.schedule(function()
 				vim.cmd("wincmd J")
