@@ -14,7 +14,9 @@ vim.opt.termguicolors = true
 vim.opt.undofile = true
 vim.opt.signcolumn = "yes"
 vim.opt.helpheight = 25
-vim.o.statusline = "%<%f %h%m%r%{FugitiveStatusline()} %=%-14.(%l,%c%V%) %P"
+if vim.fn.exists('*FugitiveStatusline') == 1 then
+	vim.o.statusline = "%<%f %h%m%r%{FugitiveStatusline()} %=%-14.(%l,%c%V%) %P"
+end
 
 -- Common keymaps
 local map = vim.keymap.set
@@ -59,10 +61,14 @@ else
 		{ src = "https://github.com/hrsh7th/cmp-buffer" },
 		{ src = "https://github.com/hrsh7th/cmp-path" },
 		{ src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
+		{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
 	})
 
 	-- explorer
 	require "oil".setup({
+		columns = {
+			"icon",
+		},
 		delete_to_trash = true,
 		keymaps = {
 			["<C-p>"] = { "actions.preview", opts = { split = "belowright" } },
