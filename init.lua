@@ -178,4 +178,8 @@ else
 	-- gitmoji
 	local gitmoji = require("gitmojis")
 	vim.keymap.set("n", "<leader>ge", gitmoji.pick, { desc = "Pick a gitmoji" })
+
+	-- gitblame
+	local gitsigns = require("gitsigns")
+	vim.keymap.set("n", "<leader>gb", gitsigns.blame_line, { desc = "Git blame the current line" })
 end
