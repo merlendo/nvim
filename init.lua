@@ -80,6 +80,7 @@ else
 	local cmp = require("cmp")
 	local cmp_select = { behavior = cmp.SelectBehavior.Select }
 	cmp.setup({
+		preselect = cmp.PreselectMode.Item,
 		sources = {
 			{ name = "nvim_lsp" },
 			{ name = "buffer" },
