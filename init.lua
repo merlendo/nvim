@@ -23,7 +23,7 @@ local map = vim.keymap.set
 map('n', '<leader>o', ':update<CR> :source<CR> :echo "Neovim config file reloaded"<CR>')
 map('n', '<leader>w', ':write<CR>')
 map('n', '<leader>r', ':update<CR> :make<CR>')
-map('n', '<leader>R', '<leader>r :%s///g<Left><Left><Left>')
+map('n', '<leader>R', ':%s///g<Left><Left><Left>')
 map('n', '<leader>q', ':quit<CR>')
 map('n', '<leader>Q', ':quit!<CR>')
 map('n', '<leader>a', 'ggVG')
