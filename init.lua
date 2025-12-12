@@ -14,6 +14,7 @@ vim.opt.termguicolors = true
 vim.opt.undofile = true
 vim.opt.signcolumn = "yes"
 vim.opt.helpheight = 25
+vim.opt.path:append("**")
 if vim.fn.exists('*FugitiveStatusline') == 1 then
 	vim.o.statusline = "%<%f %h%m%r%{FugitiveStatusline()} %=%-14.(%l,%c%V%) %P"
 end
