@@ -38,15 +38,7 @@ map({ 'n', 'v' }, '<leader>d', '"+d')
 
 -- VS code
 if vim.g.vscode then
-	local vscode = require("vscode")
-	--map('n', '<leader>e', function()
-	--vscode.call('workbench.action.toggleSidebarVisibility')
-	--vscode.call('workbench.files.action.focusFilesExplorer')
-	--end)
-	map('n', '<leader>v', function()
-		local uri = "/Users/merlendo/.config/nvim/init.lua"
-		vscode.call('vscode.open', { args = { uri } })
-	end)
+	require("vs-code")
 else
 	-- plugins
 	vim.pack.add({
