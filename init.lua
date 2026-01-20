@@ -15,6 +15,7 @@ vim.opt.undofile = true
 vim.opt.signcolumn = "yes"
 vim.opt.helpheight = 25
 vim.opt.path:append("**")
+vim.opt.grepprg = "rg --vimgrep"
 if vim.fn.exists('*FugitiveStatusline') == 1 then
 	vim.o.statusline = "%<%f %h%m%r%{FugitiveStatusline()} %=%-14.(%l,%c%V%) %P"
 end
@@ -74,6 +75,9 @@ else
 	local cmp_select = { behavior = cmp.SelectBehavior.Select }
 	cmp.setup({
 		preselect = cmp.PreselectMode.Item,
+		completion = {
+			completeopt = "menu,menuone,noinsert",
+		},
 		sources = {
 			{ name = "nvim_lsp" },
 			{ name = "buffer" },
@@ -144,6 +148,7 @@ else
 	})
 	map('n', '<leader>f', ":Pick files<CR>")
 	map('n', '<leader>h', ":Pick help<CR>")
+	map('n', '<leader>b', ":Pick buffers<CR>")
 
 	-- colors	
 	require("vague").setup({ transparent = true })
