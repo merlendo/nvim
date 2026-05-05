@@ -19,6 +19,12 @@ vim.opt.grepprg = "rg --vimgrep"
 if vim.fn.exists('*FugitiveStatusline') == 1 then
 	vim.o.statusline = "%<%f %h%m%r%{FugitiveStatusline()} %=%-14.(%l,%c%V%) %P"
 end
+vim.opt.listchars = {
+  tab = "→ ",
+  space = "·",
+  trail = "•",
+  eol = "↵",
+}
 
 -- common keymaps
 local map = vim.keymap.set
@@ -91,7 +97,7 @@ cmp.setup({
 )
 
 -- lsp
-vim.lsp.enable({ "ruff", "pyright", "lua_ls", "ts_ls", "gopls", "intelephense", "angularls", "biome" })
+vim.lsp.enable({ "ruff", "pyright", "lua_ls", "ts_ls", "gopls", "intelephense", "angularls", "biome", "clangd"})
 map('n', '<leader>lf', function()
 	vim.lsp.buf.format()
 	vim.lsp.buf.code_action({
@@ -189,3 +195,10 @@ markview.setup(
 		}
 	}
 )
+
+-- whitespaces
+vim.api.nvim_set_hl(0, "Whitespace",   { fg = "#FF6600" })
+vim.api.nvim_set_hl(0, "NonText",      { fg = "#FF6600" }) -- pour eol
+vim.keymap.set("n", "<leader>l", function()
+  vim.opt.list = not vim.opt.list:get()
+end, { desc = "Toggle espaces/tabs" })
